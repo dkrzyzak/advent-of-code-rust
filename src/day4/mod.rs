@@ -1,5 +1,6 @@
-use std::collections::HashMap;
+#![allow(warnings)]
 
+use std::collections::HashMap;
 use super::read::read_input_file;
 
 fn get_num_vec(s: &str) -> Vec<u32> {
