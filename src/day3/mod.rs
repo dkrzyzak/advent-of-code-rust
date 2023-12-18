@@ -1,3 +1,5 @@
+#![allow(warnings)]
+
 use std::collections::HashMap;
 
 use super::read::read_input_file;

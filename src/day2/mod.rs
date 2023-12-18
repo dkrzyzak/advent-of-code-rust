@@ -1,3 +1,5 @@
+#![allow(warnings)]
+
 use super::read::read_input_file;
 use regex::Regex;
 
