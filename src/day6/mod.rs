@@ -1,3 +1,5 @@
+#![allow(dead_code)]
+
 use super::read::read_input_file;
 
 fn prepare_data(lines: Vec<String>) -> Vec<(u32, u32)> {
