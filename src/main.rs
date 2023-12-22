@@ -6,6 +6,7 @@ mod day6;
 mod day7;
 mod day8;
 mod day9;
+mod day10;
 
 pub mod read;
 pub mod algos;
@@ -17,5 +18,6 @@ fn main() {
     // day4::task2();
     // day7::task2();
     // day8::task2();
-    day9::task2();
+    // day9::task2();
+    day10::task1();
 }
