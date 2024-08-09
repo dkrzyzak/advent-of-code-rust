@@ -29,7 +29,7 @@ struct Neighbour {
 }
 
 pub fn task1() {
-   let lines = read_input_file("day10");
+   let lines = read_input_file("y2023", "day10");
    let parsed: Vec<Vec<char>> = lines.iter().map(|line| line.chars().collect()).collect();
 
    let s_index = find_start(&parsed);

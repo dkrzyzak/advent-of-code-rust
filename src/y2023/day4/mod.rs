@@ -1,7 +1,7 @@
 #![allow(dead_code)]
 
 use std::collections::HashMap;
-use super::read::read_input_file;
+use crate::read::read_input_file;
 
 fn get_num_vec(s: &str) -> Vec<u32> {
     s.split_whitespace()
@@ -10,7 +10,7 @@ fn get_num_vec(s: &str) -> Vec<u32> {
 }
 
 pub fn task1() {
-    let lines = read_input_file("day4");
+    let lines = read_input_file("y2023", "day4");
 
     let x: u32 = lines
         .iter()
@@ -43,7 +43,7 @@ pub fn task1() {
 }
 
 pub fn task2() {
-    let lines = read_input_file("day4");
+    let lines = read_input_file("y2023", "day4");
 
     let wins_vector: Vec<u32> = lines
         .iter()

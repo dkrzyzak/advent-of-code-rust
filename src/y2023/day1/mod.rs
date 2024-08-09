@@ -1,6 +1,6 @@
 #![allow(dead_code)]
 
-use super::read::read_input_file;
+use crate::read::read_input_file;
 
 fn extract_numbers(input: &str) -> Vec<u32> {
     let digit_words = vec![
@@ -47,7 +47,7 @@ fn extract_numbers(input: &str) -> Vec<u32> {
 }
 
 pub fn task1() {
-    let lines = read_input_file("day1");
+    let lines = read_input_file("y2023", "day1");
 
     let calibration_values: Vec<Vec<u32>> = lines
         .iter()

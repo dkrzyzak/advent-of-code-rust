@@ -2,7 +2,7 @@
 
 use std::collections::HashMap;
 
-use super::read::read_input_file;
+use crate::read::read_input_file;
 
 fn get_card_strength(card: &char) -> u32 {
       // WITH JOKER
@@ -142,7 +142,7 @@ fn parse_lines(lines: Vec<String>, with_joker: bool) -> Vec<Card> {
 }
 
 pub fn task1() {
-    let lines = read_input_file("day7");
+    let lines = read_input_file("y2023", "day7");
     let mut parsed_lines = parse_lines(lines, false);
     parsed_lines.sort();
 
@@ -154,7 +154,7 @@ pub fn task1() {
 }
 
 pub fn task2() {
-   let lines = read_input_file("day7");
+   let lines = read_input_file("y2023", "day7");
     let mut parsed_lines = parse_lines(lines, true);
     parsed_lines.sort();
 

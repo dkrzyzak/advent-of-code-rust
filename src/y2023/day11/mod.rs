@@ -20,7 +20,7 @@ impl Pair {
 }
 
 pub fn task1() {
-    let mut lines: Vec<Vec<char>> = read_input_file("day11")
+    let mut lines: Vec<Vec<char>> = read_input_file("y2023", "day11")
         .iter()
         .map(|line| line.chars().collect())
         .collect();
