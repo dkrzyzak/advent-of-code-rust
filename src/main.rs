@@ -10,6 +10,7 @@ mod y2015 {
     pub mod day6;
     pub mod day7;
     pub mod day8;
+    pub mod day9;
 }
 
 mod y2023 {
@@ -30,8 +31,6 @@ pub mod algos;
 pub mod read;
 pub mod write;
 
-use y2015::*;
-
 fn main() {
-    day8::task();
+    y2015::day9::task();
 }  
