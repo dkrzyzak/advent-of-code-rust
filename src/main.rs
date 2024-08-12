@@ -9,6 +9,7 @@ mod y2015 {
     pub mod day5;
     pub mod day6;
     pub mod day7;
+    pub mod day8;
 }
 
 mod y2023 {
@@ -32,5 +33,5 @@ pub mod write;
 use y2015::*;
 
 fn main() {
-    day7::task();
+    day8::task();
 }  
