@@ -1,6 +1,6 @@
 #![allow(dead_code)]
 
-use crate::read::read_input_file;
+use crate::parse_input;
 use regex::Regex;
 
 #[derive(Debug)]
@@ -17,7 +17,7 @@ struct GameData {
 }
 
 pub fn task1() {
-    let lines = read_input_file("y2023", "day2");
+    let lines = parse_input!();
 
     let game_data = lines
         .iter()
@@ -48,7 +48,7 @@ pub fn task1() {
 }
 
 pub fn task2() {
-let lines = read_input_file("y2023", "day2");
+let lines = parse_input!();
 
     let game_data = lines
         .iter()

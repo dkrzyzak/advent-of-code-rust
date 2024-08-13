@@ -1,4 +1,4 @@
-use crate::read::read_input_file;
+use crate::parse_input;
 use std::collections::HashMap;
 
 mod detector;
@@ -7,7 +7,7 @@ mod operations;
 use operations::*;
 
 pub fn task() {
-    let lines = read_input_file("y2015", "day7");
+    let lines = parse_input!();
 
     let mut circuit_map: HashMap<String, u16> = HashMap::new();
     let mut instructions: Vec<Instruction> = Vec::new();

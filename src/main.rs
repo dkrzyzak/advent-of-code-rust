@@ -12,6 +12,7 @@ mod y2015 {
     pub mod day8;
     pub mod day9;
     pub mod day10;
+    pub mod day11;
 }
 
 mod y2023 {
@@ -32,6 +33,12 @@ pub mod algos;
 pub mod read;
 pub mod write;
 
+#[macro_export]
+macro_rules! parse_input {
+    () => {
+       crate::read::read_input_file(std::path::Path::new(file!()).parent().unwrap()) 
+    };
+}
 fn main() {
     y2015::day10::task();
 }  

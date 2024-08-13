@@ -1,7 +1,7 @@
-use crate::read::read_input_file;
+use crate::parse_input;
 
 pub fn task() {
-   let lines = read_input_file("y2015", "day1");
+   let lines = parse_input!();
    let parens = lines.first().unwrap();
 
    let mut current_floor: i32 = 0;

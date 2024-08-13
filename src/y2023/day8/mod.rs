@@ -3,10 +3,10 @@
 use std::collections::HashMap;
 
 use crate::algos::lcm_vec;
-use crate::read::read_input_file;
+use crate::parse_input;
 
 fn prepare_data() -> (Vec<char>, HashMap<String, (String, String)>) {
-    let mut lines = read_input_file("y2023", "day8");
+    let mut lines = parse_input!();
     // EXTRACT L-R INSTRUCTIONS
     let instructions = lines.get(0).unwrap().chars().collect::<Vec<char>>();
 

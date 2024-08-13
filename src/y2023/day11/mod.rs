@@ -1,6 +1,6 @@
 use std::collections::HashMap;
 
-use crate::read::read_input_file;
+use crate::parse_input;
 
 #[derive(Debug)]
 struct Pair {
@@ -20,7 +20,7 @@ impl Pair {
 }
 
 pub fn task1() {
-    let mut lines: Vec<Vec<char>> = read_input_file("y2023", "day11")
+    let mut lines: Vec<Vec<char>> = parse_input!()
         .iter()
         .map(|line| line.chars().collect())
         .collect();

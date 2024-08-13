@@ -3,10 +3,10 @@ use itertools::Itertools;
 use regex::Regex;
 
 
-use crate::read::read_input_file;
+use crate::parse_input;
 
 pub fn task() {
-    let lines = read_input_file("y2015", "day9");
+    let lines = parse_input!();
 
     // { Dublin: [ (London, 464), (Belfast, 141) ] }
     let mut distances: HashMap<String, Vec<(String, u32)>> = HashMap::new();

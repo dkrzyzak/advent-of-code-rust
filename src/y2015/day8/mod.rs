@@ -1,7 +1,7 @@
-use crate::read::read_input_file;
+use crate::parse_input;
 
 pub fn task() {
-    let lines = read_input_file("y2015", "day8");
+    let lines = parse_input!();
     let mut combined_diff_1: usize = 0;
     let mut combined_diff_2: usize = 0;
 

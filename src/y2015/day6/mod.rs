@@ -1,6 +1,6 @@
 use regex::Regex;
 
-use crate::read::read_input_file;
+use crate::parse_input;
 
 fn extract_from_line(line: &String) -> (String, (usize, usize), (usize, usize)) {
     let re = Regex::new(r"(turn on|turn off|toggle) (\d+),(\d+) through (\d+),(\d+)").unwrap();
@@ -18,7 +18,7 @@ fn extract_from_line(line: &String) -> (String, (usize, usize), (usize, usize)) 
 }
 
 pub fn task() {
-    let lines = read_input_file("y2015", "day6");
+    let lines = parse_input!();
 
     let mut grid: Vec<Vec<usize>> = vec![vec![0; 1000]; 1000];
     for line in lines.iter() {

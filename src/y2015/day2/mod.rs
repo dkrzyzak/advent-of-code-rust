@@ -1,9 +1,9 @@
 use std::cmp::{max, min};
 
-use crate::read::read_input_file;
+use crate::parse_input;
 
 pub fn task1() {
-    let lines = read_input_file("y2015", "day2");
+    let lines = parse_input!();
 
     let formatted: u32 = lines
         .iter()

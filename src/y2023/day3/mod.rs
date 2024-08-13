@@ -2,7 +2,7 @@
 
 use std::collections::HashMap;
 
-use crate::read::read_input_file;
+use crate::parse_input;
 
 const SYMBOLS: &[char] = &['!', '@', '#', '$', '%', '^', '&', '*', '/', '-', '=', '+'];
 
@@ -38,7 +38,7 @@ fn get_value<T>(v: &Vec<Vec<T>>, row: i32, col: i32) -> Option<&T> {
 }
 
 pub fn task1() {
-    let lines: Vec<Vec<char>> = read_input_file("y2023", "day3")
+    let lines: Vec<Vec<char>> = parse_input!()
         .iter()
         .map(|line| line.chars().collect())
         .collect();
@@ -90,7 +90,7 @@ pub fn task1() {
 }
 
 pub fn task2() {
-    let lines: Vec<Vec<char>> = read_input_file("y2023", "day3")
+    let lines: Vec<Vec<char>> = parse_input!()
         .iter()
         .map(|line| line.chars().collect())
         .collect();

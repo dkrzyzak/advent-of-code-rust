@@ -1,6 +1,6 @@
 use std::collections::HashMap;
 
-use crate::read::read_input_file;
+use crate::parse_input;
 
 // const BOARD_SIZE: usize = 140;
 const BOARD_SIZE: (usize, usize) = (20, 10);
@@ -29,7 +29,7 @@ struct Neighbour {
 }
 
 pub fn task1() {
-   let lines = read_input_file("y2023", "day10");
+   let lines = parse_input!();
    let parsed: Vec<Vec<char>> = lines.iter().map(|line| line.chars().collect()).collect();
 
    let s_index = find_start(&parsed);

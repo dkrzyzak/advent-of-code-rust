@@ -1,6 +1,6 @@
 use std::collections::HashMap;
 
-use crate::read::read_input_file;
+use crate::parse_input;
 
 fn is_nice_1(s: &String) -> bool {
     let vowels: Vec<char> = "aeiou".chars().collect();
@@ -111,7 +111,7 @@ fn is_nice_2(s: &String) -> bool {
 }
 
 pub fn task() {
-    let lines = read_input_file("y2015", "day5");
+    let lines = parse_input!();
 
     let sum: i32 = lines
         .iter()

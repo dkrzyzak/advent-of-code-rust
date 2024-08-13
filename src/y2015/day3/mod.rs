@@ -1,6 +1,6 @@
 use std::{collections::HashMap, ops::Add};
 
-use crate::read::read_input_file;
+use crate::parse_input;
 
 #[derive(Debug, PartialEq, Eq, Hash, Clone, Copy)]
 struct Point {
@@ -38,7 +38,7 @@ pub fn task() {
         ('>', Point { x: 1, y: 0 }),
     ]);
 
-    let lines = read_input_file("y2015", "day3");
+    let lines = parse_input!();
     let symbols = lines.first().unwrap();
 
     let mut current_santa = Point { x: 0, y: 0 };

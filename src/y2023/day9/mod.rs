@@ -1,9 +1,9 @@
 #![allow(dead_code)]
 
-use crate::read::read_input_file;
+use crate::parse_input;
 
 pub fn task1() {
-   let lines = read_input_file("y2023", "day9");
+   let lines = parse_input!();
 
    let parsed: Vec<Vec<i32>> = lines.iter().map(|line| {
       line.split(" ").map(|s| s.parse::<i32>().unwrap()).collect()
@@ -57,7 +57,7 @@ pub fn task1() {
 }
 
 pub fn task2() {
-   let lines = read_input_file("y2023", "day9");
+   let lines = parse_input!();
 
    let parsed: Vec<Vec<i32>> = lines.iter().map(|line| {
       line.split(" ").map(|s| s.parse::<i32>().unwrap()).collect()

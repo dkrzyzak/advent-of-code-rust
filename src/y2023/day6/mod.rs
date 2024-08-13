@@ -1,6 +1,6 @@
 #![allow(dead_code)]
 
-use crate::read::read_input_file;
+use crate::parse_input;
 
 fn prepare_data(lines: Vec<String>) -> Vec<(u32, u32)> {
    let parsed: Vec<Vec<u32>> = lines.iter().map(|line| {
@@ -21,7 +21,7 @@ fn prepare_data(lines: Vec<String>) -> Vec<(u32, u32)> {
 }
 
 pub fn task1() {
-   let lines = read_input_file("y2023", "day6");
+   let lines = parse_input!();
    let races = prepare_data(lines);
    
    let product = races.iter().map(|(time, distance_record)| {
@@ -43,7 +43,7 @@ pub fn task1() {
 }
 
 pub fn task2() {
-   // let lines = read_input_file("y2023", "day6");
+   // let lines = parse_input!();
 
    // SKIP THE VALIDATION, cause i can 
 

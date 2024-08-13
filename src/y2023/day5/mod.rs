@@ -1,5 +1,5 @@
-use crate::read::read_input_file;
+use crate::parse_input;
 
 pub fn task1() {
-   let lines = read_input_file("y2023", "day5");
+   let lines = parse_input!();
 }
