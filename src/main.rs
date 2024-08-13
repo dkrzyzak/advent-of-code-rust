@@ -36,9 +36,9 @@ pub mod write;
 #[macro_export]
 macro_rules! parse_input {
     () => {
-       crate::read::read_input_file(std::path::Path::new(file!()).parent().unwrap()) 
+        crate::read::read_input_file(std::path::Path::new(file!()).parent().unwrap())
     };
 }
 fn main() {
-    y2015::day10::task();
-}  
+    y2015::day11::task();
+}
