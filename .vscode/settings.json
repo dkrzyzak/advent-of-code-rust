@@ -3,6 +3,8 @@
       "akitas",
       "hasher",
       "Itertools",
+      "replacen",
+      "rfind",
       "robo",
       "santas",
       "vizslas"

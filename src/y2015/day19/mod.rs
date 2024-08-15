@@ -13,8 +13,8 @@ pub fn task() {
     // task1(&productions, &starting);
 
     let prods_rev = reverse_productions(&productions);
-    let mut molecule = starting;
-    let mut steps = 0;
+    let molecule = starting;
+    let steps = 0;
 
     while molecule.contains("Ar") {
         let ar_index = molecule.find("Ar").unwrap();
