@@ -46,6 +46,7 @@ mod y2023 {
 pub mod algos;
 pub mod read;
 pub mod write;
+pub mod point;
 
 #[macro_export]
 macro_rules! parse_input {
@@ -54,5 +55,5 @@ macro_rules! parse_input {
     };
 }
 fn main() {
-    y2015::day25::task();
+    y2023::day10::task();
 }
