@@ -48,9 +48,8 @@ mod common {
     pub mod read;
     pub mod point;
     pub mod algos;
-    pub mod between;
 }
 
 fn main() {
-    y2023::day3::task1();
+    y2023::day5::task();
 }

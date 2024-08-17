@@ -1,6 +1,6 @@
 use std::{collections::HashMap, time::Instant};
 
-use crate::{common::between::Between, parse_input};
+use crate::parse_input;
 
 #[derive(Debug)]
 struct Pair {
@@ -16,6 +16,16 @@ impl Pair {
 
     pub fn contains(&self, a: u32, b: u32) -> bool {
         (self.a == a && self.b == b) || (self.a == b && self.b == a)
+    }
+}
+
+trait Between {
+    fn between(&self, a: usize, b: usize) -> bool;
+}
+
+impl Between for usize {
+    fn between(&self, a: usize, b: usize) -> bool {
+        *self > a && *self < b
     }
 }
 
