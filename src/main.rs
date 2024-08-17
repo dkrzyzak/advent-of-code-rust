@@ -25,6 +25,7 @@ mod y2015 {
     pub mod day21;
     pub mod day22;
     pub mod day23;
+    pub mod day24;
 }
 
 mod y2023 {
@@ -52,5 +53,5 @@ macro_rules! parse_input {
     };
 }
 fn main() {
-    y2015::day23::task();
+    y2015::day24::task();
 }
