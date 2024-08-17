@@ -55,5 +55,5 @@ macro_rules! parse_input {
     };
 }
 fn main() {
-    y2023::day10::task();
+    y2023::day11::task();
 }
