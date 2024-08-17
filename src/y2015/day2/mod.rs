@@ -2,7 +2,7 @@ use std::cmp::{max, min};
 
 use crate::parse_input;
 
-pub fn task1() {
+pub fn task() {
     let lines = parse_input!();
 
     let formatted: u32 = lines

@@ -43,17 +43,14 @@ mod y2023 {
     pub mod day11;
 }
 
-pub mod algos;
-pub mod read;
-pub mod write;
-pub mod point;
-
-#[macro_export]
-macro_rules! parse_input {
-    () => {
-        crate::read::read_input_file(std::path::Path::new(file!()).parent().unwrap())
-    };
+mod common {
+    pub mod write;
+    pub mod read;
+    pub mod point;
+    pub mod algos;
+    pub mod between;
 }
+
 fn main() {
-    y2023::day11::task();
+    y2023::day3::task1();
 }

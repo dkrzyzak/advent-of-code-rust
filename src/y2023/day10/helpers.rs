@@ -1,5 +1,5 @@
-use crate::point::Point;
 use std::collections::HashMap;
+use crate::common::point::Point;
 
 #[derive(Debug)]
 struct Neighbour {

@@ -1,6 +1,6 @@
 use std::{collections::HashMap, time::Instant};
 
-use crate::{algos::Between, parse_input};
+use crate::{common::between::Between, parse_input};
 
 #[derive(Debug)]
 struct Pair {

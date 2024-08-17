@@ -12,3 +12,10 @@ pub fn read_input_file(folder_path: &Path) -> Vec<String> {
 
     lines
 }
+
+#[macro_export]
+macro_rules! parse_input {
+    () => {
+        crate::common::read::read_input_file(std::path::Path::new(file!()).parent().unwrap())
+    };
+}

@@ -1,4 +1,4 @@
-use crate::{parse_input, point::Point};
+use crate::{common::point::Point, parse_input};
 
 mod helpers;
 use helpers::*;
@@ -60,7 +60,7 @@ pub fn task() {
                 }
 
                 if point == 'J' && previous_connector == 'L' {
-                    inside == !inside;
+                    inside = !inside;
                     previous_connector = point;
                 }
             }

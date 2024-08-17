@@ -1,34 +1,7 @@
-use std::{collections::HashMap, ops::Add};
+use std::collections::HashMap;
 
-use crate::parse_input;
+use crate::{common::point::Point, parse_input};
 
-#[derive(Debug, PartialEq, Eq, Hash, Clone, Copy)]
-struct Point {
-    x: i32,
-    y: i32,
-}
-
-impl Add for Point {
-    type Output = Point;
-
-    fn add(self, other: Point) -> Point {
-        Point {
-            x: self.x + other.x,
-            y: self.y + other.y,
-        }
-    }
-}
-
-impl<'a> Add<&'a Point> for Point {
-    type Output = Point;
-
-    fn add(self, other: &'a Point) -> Point {
-        Point {
-            x: self.x + other.x,
-            y: self.y + other.y,
-        }
-    }
-}
 
 pub fn task() {
     let chars_map = HashMap::from([

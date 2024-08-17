@@ -2,7 +2,7 @@
 
 use std::collections::HashMap;
 
-use crate::algos::lcm_vec;
+use crate::common::algos::lcm_vec;
 use crate::parse_input;
 
 fn prepare_data() -> (Vec<char>, HashMap<String, (String, String)>) {

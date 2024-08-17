@@ -1,16 +1,9 @@
-#![allow(dead_code)]
-
 use std::collections::HashMap;
 
-use crate::parse_input;
+use crate::{common::point::Point, parse_input};
 
 const SYMBOLS: &[char] = &['!', '@', '#', '$', '%', '^', '&', '*', '/', '-', '=', '+'];
 
-#[derive(Debug, PartialEq, Eq, Hash, Clone, Copy)]
-struct Point {
-    x: i32,
-    y: i32,
-}
 
 const NEIGHBOURS: &[Point] = &[
     Point { x: -1, y: -1 },
