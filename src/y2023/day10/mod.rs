@@ -1,4 +1,4 @@
-use crate::parse_input;
+use crate::{parse_input, point::Point};
 
 mod helpers;
 use helpers::*;
@@ -14,46 +14,60 @@ pub fn task() {
 
     // TASK 2
 
-    //  for x in 0..board_rows {
-    //      for y in 0..board_cols {
-    //          let ch = grid[x][y];
-    //          let is_in_path = path.contains(&Point {
-    //              x: x as i32,
-    //              y: y as i32,
-    //          });
-    //          println!(
-    //             //  "index: x: {} y: {}, ch: {}, is in path: {}",
-    //              x, y, ch, is_in_path
-    //          );
-    //      }
-    //      print!("\n");
-    //  }
+    let mut total_inside_area = 0u32;
+    for row in 0..board_rows {
+        let mut inside = false;
+        let mut previous_connector = 'x';
 
-    // let mut area = 0;
-    // let mut area_tiles = Vec::new();
+        for col in 0..board_cols {
+            let point = grid[row][col];
 
-    // for (y_index, line) in parsed.iter().enumerate() {
-    //    let mut inside = false;
+            if point == '.' && inside {
+                // println!("Adding . point to area");
+                total_inside_area += 1;
+                continue;
+            }
 
-    //    for (x_index, &item) in line.iter().enumerate() {
-    //       if !visited.contains(&(x_index, y_index)) {
-    //          if inside {
-    //             area += 1;
-    //             area_tiles.push((x_index, y_index));
-    //          } else {
-    //             continue;
-    //          }
-    //       } else {
-    //          if item != '-' {
-    //             inside = !inside;
-    //          }
-    //          continue;
-    //       }
+            let is_in_path = path.contains(&Point {
+                x: col as i32,
+                y: row as i32,
+            });
+            
+            if !is_in_path && inside {
+                // println!("Adding this point to area");
+                total_inside_area += 1;
+                continue;
+            }
 
-    //    }
+            if is_in_path {
+                // !! HACK because in my data S is between | and | 
+                if point == '|' || point == 'S' {
+                    inside = !inside;
+                }
 
-    // }
+                if point == '-' {
+                    continue;
+                }
 
-    // println!("area = {}", area);
-    // println!("area tiles = {:?}", area_tiles);
+                if point == 'L' || point == 'J' {
+                    inside = !inside;
+                    previous_connector = point;
+                }
+
+                if point == '7' && previous_connector == 'F' {
+                    inside = !inside;
+                    previous_connector = point;
+                }
+
+                if point == 'J' && previous_connector == 'L' {
+                    inside == !inside;
+                    previous_connector = point;
+                }
+            }
+
+            
+        }
+    }
+
+    println!("Total area: {}", total_inside_area);
 }

@@ -7,22 +7,6 @@ struct Neighbour {
     allowed_symbols: Vec<char>,
 }
 
-// pub fn simplify_input(lines: &Vec<Vec<char>>, visited: &Vec<Point>) {
-//     let simplified: Vec<String> = lines
-//         .iter()
-//         .map(|line| {
-//             line.replace("F", "┌")
-//                 .replace("J", "┘")
-//                 .replace("7", "┐")
-//                 .replace("L", "└")
-//         })
-//         .collect();
-
-//     for line in simplified {
-//         println!("{}", line);
-//     }
-// }
-
 pub fn find_start(grid: &Vec<Vec<char>>) -> Point {
     let mut s_index = Point::new(0, 0);
 
