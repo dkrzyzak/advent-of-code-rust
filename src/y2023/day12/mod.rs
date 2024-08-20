@@ -30,27 +30,25 @@ pub fn task() {
 
 fn get_correct_combinations(
     springs: String,
-    good_springs: Vec<u8>,
+    spring_groups: Vec<u8>,
     splitter: &Regex,
     cache: &mut HashMap<(String, Vec<u8>), u128>,
 ) -> u128 {
     // we got to the final version
     if !springs.contains("x") {
-        let correct_regex = get_correct_regex(&good_springs);
+        let correct_regex = get_correct_regex(&spring_groups);
         if correct_regex.is_match(&springs) {
+            // cache.insert((springs, spring_groups), 1);
             return 1;
         }
 
+        // cache.insert((springs, spring_groups), 0);
         return 0;
     }
 
-    // let splitted = splitter
-    //     .split(&springs)
-    //     .filter(|s| !s.is_empty())
-    //     .map(|s| s.len() as u8)
-    //     .collect::<Vec<_>>();
+    extract_subproblems(&springs, &spring_groups);
 
-    let acceptable_regex = get_acceptable_regex(&good_springs);
+    let acceptable_regex = get_acceptable_regex(&spring_groups);
 
     if !acceptable_regex.is_match(&springs) {
         return 0;
@@ -59,6 +57,6 @@ fn get_correct_combinations(
     let replaced_with_0 = springs.replacen("x", "0", 1);
     let replaced_with_1 = springs.replacen("x", "1", 1);
 
-    return get_correct_combinations(replaced_with_0, good_springs.clone(), splitter, cache)
-        + get_correct_combinations(replaced_with_1, good_springs.clone(), splitter, cache);
+    return get_correct_combinations(replaced_with_0, spring_groups.clone(), splitter, cache)
+        + get_correct_combinations(replaced_with_1, spring_groups.clone(), splitter, cache);
 }

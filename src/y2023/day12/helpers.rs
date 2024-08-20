@@ -1,6 +1,10 @@
 use std::iter::repeat;
-
+use lazy_static::lazy_static;
 use regex::Regex;
+
+lazy_static! {
+    static ref SPLITTER: Regex = Regex::new(r"0+").unwrap();
+}
 
 pub fn extract_input(lines: &Vec<String>) -> Vec<(String, Vec<u8>)> {
     let mut data: Vec<(String, Vec<u8>)> = Vec::new();
@@ -60,4 +64,23 @@ pub fn get_acceptable_regex(contiguous_groups: &Vec<u8>) -> Regex {
     let reg = Regex::new(&regex_str).unwrap();
 
     reg
+}
+
+pub fn extract_subproblems(springs: &String, good_groups: &Vec<u8>) {
+    let mut splitted = SPLITTER
+        .split(springs)
+        .filter(|s| !s.is_empty())
+        .map(|s| (s, s.len() as u8))
+        .collect::<Vec<_>>();
+
+
+    while let (Some(last_good), Some(last_splitted)) = (good_groups.last(), splitted.last()) {
+        if last_splitted.1 == *last_good {
+            splitted.pop();
+        } else {
+            break;
+        }
+    }
+
+    println!("Extracted subproblems: {:?}", splitted);
 }
