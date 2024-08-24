@@ -6,7 +6,7 @@ pub struct Point {
     pub col: isize,
 }
 
-#[derive(Debug, PartialEq, Eq)]
+#[derive(Debug, Clone, PartialEq, Eq, Hash)]
 pub enum Direction {
     North,
     South,
