@@ -1,12 +1,9 @@
 use std::borrow::Borrow;
 
-#[derive(Debug, Clone, PartialEq, Eq, Hash)]
-pub struct Point {
-    pub row: isize,
-    pub col: isize,
-}
+#[derive(Debug, Clone, PartialEq, Eq, Hash, PartialOrd, Ord)]
+pub struct Point(pub isize, pub isize);
 
-#[derive(Debug, Clone, PartialEq, Eq, Hash)]
+#[derive(Debug, Clone, Copy, PartialEq, Eq, Hash, PartialOrd, Ord)]
 pub enum Direction {
     North,
     South,
@@ -17,48 +14,36 @@ pub enum Direction {
 impl Point {
     pub fn turn_left(&self, direction: &Direction) -> (Point, Direction) {
         match *direction {
-            Direction::West => (Point { row: self.row + 1, col: self.col }, Direction::South),
-            Direction::East => (Point { row: self.row - 1, col: self.col }, Direction::North),
-            Direction::North => (Point { row: self.row, col: self.col - 1 }, Direction::West),
-            Direction::South => (Point { row: self.row, col: self.col + 1 }, Direction::East),
+            Direction::West => (Point(self.0 + 1, self.1), Direction::South),
+            Direction::East => (Point(self.0 - 1, self.1), Direction::North),
+            Direction::North => (Point(self.0, self.1 - 1), Direction::West),
+            Direction::South => (Point(self.0, self.1 + 1), Direction::East),
         }
     }
 
     pub fn turn_right(&self, direction: &Direction) -> (Point, Direction) {
         match *direction {
-            Direction::West => (Point { row: self.row - 1, col: self.col }, Direction::North),
-            Direction::East => (Point { row: self.row + 1, col: self.col }, Direction::South),
-            Direction::North => (Point { row: self.row, col: self.col + 1 }, Direction::East),
-            Direction::South => (Point { row: self.row, col: self.col - 1 }, Direction::West),
+            Direction::West => (Point(self.0 - 1, self.1), Direction::North),
+            Direction::East => (Point(self.0 + 1, self.1), Direction::South),
+            Direction::North => (Point(self.0, self.1 + 1), Direction::East),
+            Direction::South => (Point(self.0, self.1 - 1), Direction::West),
         }
     }
 
     pub fn north(&self) -> Point {
-        Point {
-            row: self.row - 1,
-            col: self.col,
-        }
+        Point(self.0 - 1, self.1)
     }
 
     pub fn south(&self) -> Point {
-        Point {
-            row: self.row + 1,
-            col: self.col,
-        }
+        Point(self.0 + 1, self.1)
     }
 
     pub fn west(&self) -> Point {
-        Point {
-            row: self.row,
-            col: self.col - 1,
-        }
+        Point(self.0, self.1 - 1)
     }
 
     pub fn east(&self) -> Point {
-        Point {
-            row: self.row,
-            col: self.col + 1,
-        }
+        Point(self.0, self.1 + 1)
     }
 
     pub fn next(&self, direction: impl Borrow<Direction>) -> Point {
@@ -67,6 +52,21 @@ impl Point {
             Direction::East => self.east(),
             Direction::North => self.north(),
             Direction::South => self.south(),
+        }
+    }
+
+    pub fn is_valid(&self, rows: isize, cols: isize) -> bool {
+        self.0 >= 0 && self.0 < rows && self.1 >= 0 && self.1 < cols
+    }
+}
+
+impl Direction {
+    pub fn index(&self) -> usize {
+        match *self {
+            Direction::North => 0,
+            Direction::South => 1,
+            Direction::West => 2,
+            Direction::East => 3,
         }
     }
 }
