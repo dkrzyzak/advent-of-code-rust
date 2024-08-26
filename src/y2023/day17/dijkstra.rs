@@ -1,5 +1,5 @@
-use std::{cmp::Reverse, collections::BinaryHeap};
 use super::point::{Direction, Point};
+use std::{cmp::Reverse, collections::BinaryHeap};
 
 type HeapData = (usize, Point, Direction, usize); // current cost, point, direction, how many moves in that direction
 
@@ -10,7 +10,7 @@ pub fn shortest_path(matrix: &Vec<Vec<usize>>) -> Option<usize> {
     let end = Point(rows - 1, cols - 1);
 
     // Distance matrix initialized with MAX (infinity)
-    let mut dist = vec![vec![vec![vec![usize::MAX; 3]; 4]; cols as usize]; rows as usize];
+    let mut dist = vec![vec![vec![vec![usize::MAX; 11]; 4]; cols as usize]; rows as usize];
 
     let mut queue: BinaryHeap<Reverse<HeapData>> = BinaryHeap::new();
 
@@ -30,26 +30,30 @@ pub fn shortest_path(matrix: &Vec<Vec<usize>>) -> Option<usize> {
             continue;
         }
 
-        // Attempt to move in the same direction
-        let next_point = current_point.next(&last_dir);
-        if next_point.is_valid(rows, cols) {
-            let new_dist = current_dist + matrix[next_point.0 as usize][next_point.1 as usize];
-            if moves < 3 && new_dist < dist[next_point.0 as usize][next_point.1 as usize][last_dir.index()][moves] {
-                dist[next_point.0 as usize][next_point.1 as usize][last_dir.index()][moves] = new_dist;
-                queue.push(Reverse((new_dist, next_point, last_dir, moves + 1)));
+        if moves < 10 {
+            // Attempt to move in the same direction
+            let next_point = current_point.next(&last_dir);
+            if next_point.is_valid(rows, cols) {
+                let new_dist = current_dist + matrix[next_point.0 as usize][next_point.1 as usize];
+                if new_dist < dist[next_point.0 as usize][next_point.1 as usize][last_dir.index()][moves] {
+                    dist[next_point.0 as usize][next_point.1 as usize][last_dir.index()][moves] = new_dist;
+                    queue.push(Reverse((new_dist, next_point, last_dir, moves + 1)));
+                }
             }
         }
 
-        // Turn left and right and attempt those moves
-        for (next_point, new_dir) in [
-            current_point.turn_left(&last_dir),
-            current_point.turn_right(&last_dir),
-        ] {
-            if next_point.is_valid(rows, cols) {
-                let new_dist = current_dist + matrix[next_point.0 as usize][next_point.1 as usize];
-                if new_dist < dist[next_point.0 as usize][next_point.1 as usize][new_dir.index()][0] {
-                    dist[next_point.0 as usize][next_point.1 as usize][new_dir.index()][0] = new_dist;
-                    queue.push(Reverse((new_dist, next_point, new_dir, 1)));
+        if moves >= 4 {
+            // Turn left and right and attempt those moves
+            for (next_point, new_dir) in [
+                current_point.turn_left(&last_dir),
+                current_point.turn_right(&last_dir),
+            ] {
+                if next_point.is_valid(rows, cols) {
+                    let new_dist = current_dist + matrix[next_point.0 as usize][next_point.1 as usize];
+                    if new_dist < dist[next_point.0 as usize][next_point.1 as usize][new_dir.index()][0] {
+                        dist[next_point.0 as usize][next_point.1 as usize][new_dir.index()][0] = new_dist;
+                        queue.push(Reverse((new_dist, next_point, new_dir, 1)));
+                    }
                 }
             }
         }
