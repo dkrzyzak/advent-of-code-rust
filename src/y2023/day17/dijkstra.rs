@@ -1,4 +1,5 @@
-use super::point::{Direction, Point};
+use crate::common::direction::Direction;
+use super::point::Point;
 use std::{cmp::Reverse, collections::BinaryHeap};
 
 type HeapData = (usize, Point, Direction, usize); // current cost, point, direction, how many moves in that direction

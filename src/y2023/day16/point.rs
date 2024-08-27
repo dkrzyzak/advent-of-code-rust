@@ -1,17 +1,10 @@
 use std::borrow::Borrow;
+use crate::common::direction::Direction;
 
 #[derive(Debug, Clone, PartialEq, Eq, Hash)]
 pub struct Point {
     pub row: isize,
     pub col: isize,
-}
-
-#[derive(Debug, Clone, PartialEq, Eq, Hash)]
-pub enum Direction {
-    North,
-    South,
-    East,
-    West,
 }
 
 impl Point {

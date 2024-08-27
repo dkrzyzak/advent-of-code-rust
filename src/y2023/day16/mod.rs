@@ -1,6 +1,5 @@
 use std::collections::HashSet;
-
-use crate::parse_input;
+use crate::{common::direction::Direction, parse_input};
 
 mod point;
 use point::*;
