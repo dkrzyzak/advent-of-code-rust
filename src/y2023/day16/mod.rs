@@ -1,5 +1,5 @@
 use std::collections::HashSet;
-use crate::{common::direction::Direction, parse_input};
+use crate::{common::{direction::Direction, point::Point}, parse_input};
 
 mod point;
 use point::*;
@@ -16,10 +16,7 @@ pub fn task() {
     let last_col = cave[0].len() - 1;
     for row in 0..cave.len() {
         let result = traverse_cave(
-            Point {
-                row: row as isize,
-                col: 0,
-            },
+            Point(row as isize, 0),
             Direction::East,
             &cave,
             &mut HashSet::new(),
@@ -29,10 +26,7 @@ pub fn task() {
         biggest_energized = biggest_energized.max(result);
 
         let result = traverse_cave(
-            Point {
-                row: row as isize,
-                col: last_col as isize,
-            },
+            Point(row as isize, last_col as isize),
             Direction::West,
             &cave,
             &mut HashSet::new(),
@@ -45,10 +39,7 @@ pub fn task() {
     let last_row = cave.len() - 1;
     for col in 0..cave[0].len() {
         let result = traverse_cave(
-            Point {
-                row: 0,
-                col: col as isize,
-            },
+            Point(0, col as isize),
             Direction::South,
             &cave,
             &mut HashSet::new(),
@@ -58,10 +49,7 @@ pub fn task() {
         biggest_energized = biggest_energized.max(result);
 
         let result = traverse_cave(
-            Point {
-                row: last_row as isize,
-                col: col as isize,
-            },
+            Point(last_row as isize, col as isize),
             Direction::North,
             &cave,
             &mut HashSet::new(),
@@ -81,10 +69,10 @@ fn traverse_cave(
     visited_tiles: &mut HashSet<Point>,
     visited_splitters: &mut HashSet<Point>,
 ) -> u32 {
-    if point.row < 0
-        || point.row as usize >= cave.len()
-        || point.col < 0
-        || point.col as usize >= cave[0].len()
+    if point.0 < 0
+        || point.0 as usize >= cave.len()
+        || point.1 < 0
+        || point.1 as usize >= cave[0].len()
     {
         // we went outside the grid
         return 0;
@@ -93,7 +81,7 @@ fn traverse_cave(
     let was_new = visited_tiles.insert(point.clone());
     let tile_value = if was_new { 1 } else { 0 };
 
-    let current_tile = cave[point.row as usize][point.col as usize];
+    let current_tile = cave[point.0 as usize][point.1 as usize];
     match current_tile {
         '.' => {
             let next_point = point.next(&dir);

@@ -28,10 +28,7 @@ pub fn task() {
                 continue;
             }
 
-            let is_in_path = path.contains(&Point {
-                x: col as i32,
-                y: row as i32,
-            });
+            let is_in_path = path.contains(&Point(col as isize, row as isize));
             
             if !is_in_path && inside {
                 // println!("Adding this point to area");

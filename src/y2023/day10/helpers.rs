@@ -13,7 +13,7 @@ pub fn find_start(grid: &Vec<Vec<char>>) -> Point {
     for (y_index, inner_vec) in grid.iter().enumerate() {
         for (x_index, &item) in inner_vec.iter().enumerate() {
             if item == 'S' {
-                s_index = Point::new(x_index as i32, y_index as i32);
+                s_index = Point::new(x_index as isize, y_index as isize);
                 break;
             }
         }
@@ -73,17 +73,17 @@ pub fn part_1(grid: &Vec<Vec<char>>, board_size: &(usize, usize)) -> Vec<Point> 
     println!("Start: {:?}", start);
 
     loop {
-        let current_symbol = grid[current_idx.y as usize][current_idx.x as usize];
+        let current_symbol = grid[current_idx.1 as usize][current_idx.0 as usize];
 
         let neighbours = map.get(&current_symbol).unwrap();
 
         'find: for neighbour in neighbours {
             let new_point = current_idx + neighbour.vector;
 
-            if new_point.x < 0
-                || new_point.y < 0
-                || new_point.x >= board_size.0 as i32
-                || new_point.y >= board_size.1 as i32
+            if new_point.0 < 0
+                || new_point.1 < 0
+                || new_point.0 >= board_size.0 as isize
+                || new_point.1 >= board_size.1 as isize
             {
                 continue;
             }
@@ -92,7 +92,7 @@ pub fn part_1(grid: &Vec<Vec<char>>, board_size: &(usize, usize)) -> Vec<Point> 
                 continue;
             }
 
-            let new_symbol = grid[new_point.y as usize][new_point.x as usize];
+            let new_symbol = grid[new_point.1 as usize][new_point.0 as usize];
 
             for allowed_symbol in &neighbour.allowed_symbols {
                 if new_symbol == *allowed_symbol {
@@ -104,7 +104,7 @@ pub fn part_1(grid: &Vec<Vec<char>>, board_size: &(usize, usize)) -> Vec<Point> 
             }
         }
 
-        if grid[current_idx.y as usize][current_idx.x as usize] == 'S' {
+        if grid[current_idx.1 as usize][current_idx.0 as usize] == 'S' {
             break;
         }
     }

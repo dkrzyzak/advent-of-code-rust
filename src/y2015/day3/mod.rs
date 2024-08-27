@@ -2,20 +2,19 @@ use std::collections::HashMap;
 
 use crate::{common::point::Point, parse_input};
 
-
 pub fn task() {
     let chars_map = HashMap::from([
-        ('^', Point { x: 0, y: 1 }),
-        ('v', Point { x: 0, y: -1 }),
-        ('<', Point { x: -1, y: 0 }),
-        ('>', Point { x: 1, y: 0 }),
+        ('^', Point(0, 1)),
+        ('v', Point(0, -1)),
+        ('<', Point(-1, 0)),
+        ('>', Point(1, 0)),
     ]);
 
     let lines = parse_input!();
     let symbols = lines.first().unwrap();
 
-    let mut current_santa = Point { x: 0, y: 0 };
-    let mut current_robo = Point { x: 0, y: 0 };
+    let mut current_santa = Point(0, 0);
+    let mut current_robo = Point(0, 0);
     let mut santas_move = true;
 
     let mut visited: HashMap<Point, u32> = HashMap::new();
@@ -37,14 +36,14 @@ pub fn task() {
 
         *visited.entry(*current).or_insert(0) += 1;
 
-      //   match visited.get(current) {
-      //       None => {
-      //           visited.insert(current.clone(), 1);
-      //       }
-      //       Some(already_delivered) => {
-      //           *visited.get_mut(current).unwrap() += 1;
-      //       }
-      //   }
+        //   match visited.get(current) {
+        //       None => {
+        //           visited.insert(current.clone(), 1);
+        //       }
+        //       Some(already_delivered) => {
+        //           *visited.get_mut(current).unwrap() += 1;
+        //       }
+        //   }
 
         santas_move = !santas_move;
     }
