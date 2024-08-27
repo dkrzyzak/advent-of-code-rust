@@ -10,6 +10,10 @@ impl Point {
         Point(row, col)
     }
 
+    pub fn is_valid(&self, rows: isize, cols: isize) -> bool {
+        self.0 >= 0 && self.0 < rows && self.1 >= 0 && self.1 < cols
+    }
+
     pub fn north(&self) -> Point {
         Point(self.0 - 1, self.1)
     }
@@ -33,10 +37,6 @@ impl Point {
             Direction::North => self.north(),
             Direction::South => self.south(),
         }
-    }
-
-    pub fn is_valid(&self, rows: isize, cols: isize) -> bool {
-        self.0 >= 0 && self.0 < rows && self.1 >= 0 && self.1 < cols
     }
 }
 

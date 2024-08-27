@@ -55,6 +55,7 @@ mod common {
     pub mod read;
     pub mod point;
     pub mod direction;
+    pub mod vec;
     pub mod algos;
     pub mod regex_macro;
 }
