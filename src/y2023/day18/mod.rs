@@ -1,54 +1,63 @@
-use regex::Regex;
-use crate::{common::{direction::Direction, point::Point}, parse_captures, parse_input};
-
-#[derive(Debug)]
-pub struct DigInstr(Direction, u8, String);
+use crate::{common::{direction::Direction, point::Point}, parse_input};
 
 mod helpers;
 use helpers::*;
 
 pub fn task() {
     let lines = parse_input!();
-    let dig_plan = extract_dig_plan(&lines);
+    let dig_plan = extract_dig_plan_2(&lines);
     let mut field = Vec::<Point>::new();
 
-    dig(&dig_plan, &mut field, Point(0, 0));
-    
-    // field.print_by_line();
+    dig_corners(&dig_plan, &mut field, Point(0, 0));
 
-    let filled = flood_fill(&field);
-    // let x = shoelace_formula(&field);
-    println!("Filled size: {}", filled.len());
+    let x = shoelace_formula(&field);
+    println!("Filled size: {}", x);
 }
 
-pub fn dig(dig_plan: &Vec<DigInstr>, field: &mut Vec<Point>, starting_point: Point) {
+pub fn dig_corners(dig_plan: &Vec<DigInstr>, field: &mut Vec<Point>, starting_point: Point) {
+    let mut iter = dig_plan.iter();
+    field.push(starting_point);
+
+    let mut current_point = starting_point;
+
+    while let Some(instr) = iter.next() {
+        let DigInstr(dir, steps) = instr;
+
+        let vector = match dir {
+            Direction::East => Point(0, *steps as isize),
+            Direction::West => Point(0, -(*steps as isize)),
+            Direction::North => Point(-(*steps as isize), 0),
+            Direction::South => Point(*steps as isize, 0),
+        };
+        
+        current_point = current_point + vector;
+        field.push(current_point);
+    }
+}
+
+
+// FIRST OLD APPROACH
+
+pub fn task_with_flood_fill() {
+    let lines = parse_input!();
+    let dig_plan = extract_dig_plan_1(&lines);
+    let mut field = Vec::<Point>::new();
+    dig_all(&dig_plan, &mut field, Point(0, 0));
+    let filled = flood_fill(&field);
+
+    println!("Filled: {}", filled.len());
+}
+
+pub fn dig_all(dig_plan: &Vec<DigInstr>, field: &mut Vec<Point>, starting_point: Point) {
     let mut iter = dig_plan.iter();
     let mut current_point = starting_point;
 
     while let Some(instr) = iter.next() {
-        let DigInstr(dir, steps, _) = instr;
+        let DigInstr(dir, steps) = instr;
 
         for _ in 0..*steps {
             field.push(current_point);
             current_point = current_point.next(dir);
         }
     }
-}
-
-fn extract_dig_plan(lines: &Vec<String>) -> Vec<DigInstr> {
-    let reg = Regex::new(r"(\w) (\d+) \(#(\w+)\)").unwrap();
-
-    lines.iter().map(|line| {
-        let (dir, steps, hex): (char, u8, String) = parse_captures!(&reg, line, 1 char, 2 u8, 3 String);
-
-        let mapped_dir = match dir {
-            'U' => Direction::North,
-            'D' => Direction::South,
-            'L' => Direction::West,
-            'R' => Direction::East,
-            _ => { panic!("Invalid direction") }
-        };
-
-        DigInstr(mapped_dir, steps, hex)
-    }).collect::<Vec<_>>()
 }

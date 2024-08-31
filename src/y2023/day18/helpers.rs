@@ -1,6 +1,9 @@
 use std::collections::{HashSet, VecDeque};
+use regex::Regex;
+use crate::{common::{direction::Direction, point::Point}, parse_captures};
 
-use crate::common::point::Point;
+#[derive(Debug)]
+pub struct DigInstr(pub Direction, pub u64);
 
 impl Point {
     pub fn min_x(points: &Vec<Point>) -> isize {
@@ -29,6 +32,47 @@ impl Point {
     }
 }
 
+pub fn extract_dig_plan_1(lines: &Vec<String>) -> Vec<DigInstr> {
+    let reg = Regex::new(r"(\w) (\d+) \(#(\w+)\)").unwrap();
+
+    lines.iter().map(|line| {
+        let (dir, steps, hex): (char, u64, String) = parse_captures!(&reg, line, 1 char, 2 u64, 3 String);
+
+        let mapped_dir = match dir {
+            'U' => Direction::North,
+            'D' => Direction::South,
+            'L' => Direction::West,
+            'R' => Direction::East,
+            _ => unreachable!("Invalid direction")
+        };
+
+        DigInstr(mapped_dir, steps)
+    }).collect::<Vec<_>>()
+}
+
+pub fn extract_dig_plan_2(lines: &Vec<String>) -> Vec<DigInstr> {
+    let reg = Regex::new(r"(\w) (\d+) \(#(\w+)\)").unwrap();
+
+    lines.iter().map(|line| {
+        let (dir, steps, hex): (char, u8, String) = parse_captures!(&reg, line, 1 char, 2 u8, 3 String);
+
+        let (first_slice, second_slice) = hex.split_at(5);
+        let parsed_steps = u64::from_str_radix(first_slice, 16).unwrap();
+
+        let parsed_dir = match second_slice {
+            "0" => Direction::East,
+            "1" => Direction::South,
+            "2" => Direction::West,
+            "3" => Direction::North,
+            _ => unreachable!("Invalid direction")
+        };
+
+        // println!("nosplit: {}, first: {}, second: {:?}", hex, parsed_steps, parsed_dir);
+
+        DigInstr(parsed_dir, parsed_steps)
+    }).collect::<Vec<_>>()
+}
+
 pub fn shoelace_formula(points: &Vec<Point>) -> isize {
     let len = points.len();
 
@@ -47,7 +91,7 @@ pub fn shoelace_formula(points: &Vec<Point>) -> isize {
                 (new_area, new_perimeter)
             });
 
-    area.abs() + (perimeter / 2) + 1
+    area.abs() / 2 + (perimeter / 2) + 1
 }
 
 pub fn flood_fill(perimeter: &Vec<Point>) -> Vec<Point> {
@@ -77,17 +121,7 @@ pub fn flood_fill(perimeter: &Vec<Point>) -> Vec<Point> {
         queue.push_back(point.south());
         queue.push_back(point.west());
         queue.push_back(point.east());
-
-        // queue.push_back(Point(point.0 + 1, point.1));
-        // queue.push_back(Point(point.0 - 1, point.1));
-        // queue.push_back(Point(point.0, point.1 + 1));
-        // queue.push_back(Point(point.0, point.1 - 1));
     }
 
     result
 }
-// results so far:
-
-// 11697
-// 17101
-// 26857
