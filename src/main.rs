@@ -48,6 +48,7 @@ mod y2023 {
     pub mod day16;
     pub mod day17;
     pub mod day18;
+    pub mod day19;
 }
 
 mod common {
@@ -55,11 +56,11 @@ mod common {
     pub mod read;
     pub mod point;
     pub mod direction;
-    pub mod vec;
+    pub mod print_by_line;
     pub mod algos;
     pub mod regex_macro;
 }
 
 fn main() {
-    y2023::day18::task();
+    y2023::day19::task();
 }
