@@ -1,3 +1,5 @@
+use std::fmt::{Display, Formatter, Result};
+
 #[derive(Debug, Clone)]
 pub struct PartRange {
     pub x: Range,
@@ -7,20 +9,20 @@ pub struct PartRange {
 }
 
 impl PartRange {
-    pub fn new() -> PartRange {
+    pub fn new() -> Self {
         PartRange {
-            x: Range::new(),
-            m: Range::new(),
-            a: Range::new(),
-            s: Range::new(),
+            x: Range::default(),
+            m: Range::default(),
+            a: Range::default(),
+            s: Range::default(),
         }
     }
 
     pub fn total(&self) -> usize {
-        self.x.total() + self.m.total() + self.a.total() + self.s.total()
+        self.x.total() * self.m.total() * self.a.total() * self.s.total()
     }
 
-    pub fn split(&self, field_name: &str, at: usize, operation: &str) -> (PartRange, PartRange) {
+    pub fn split(&self, field_name: &str, at: usize, operation: &str) -> (Self, Self) {
         let bounds = match field_name {
             "x" => &self.x,
             "m" => &self.m,
@@ -55,50 +57,45 @@ impl PartRange {
 
 #[derive(Debug, Clone)]
 pub struct Range {
-    pub bounds: Vec<usize>,
+    pub lower: usize,
+    pub upper: usize,
 }
 
 impl Range {
-    pub fn new() -> Range {
+    pub fn default() -> Self {
         Range {
-            bounds: vec![1, 4000],
+            lower: 1,
+            upper: 4000,
         }
+    }
+
+    pub fn new(lower: usize, upper: usize) -> Self {
+        Range { upper, lower }
     }
 
     // x > 300: (low, 300), (300 + 1, high)
     // x < 300: (low, 300 - 1), (300, high)
-
     pub fn split(&self, at: usize, operator: &str) -> (Range, Range) /* (ok, not_ok) */ {
-        let split_index = self.bounds.iter().position(|bound| *bound > at).unwrap();
-        let mut bounds_low = (&self.bounds[..split_index]).to_vec();
-        let mut bounds_up = (&self.bounds[split_index..]).to_vec();
-
-        // println!(
-        //     "{:?}, split index: {}, {:?}, {:?}",
-        //     self.bounds, split_index, bounds_low, bounds_up
-        // );
-
         if operator == ">" {
-            bounds_low.push(at);
-            bounds_up.insert(0, at + 1);
-        
-            return (Range { bounds: bounds_up }, Range { bounds: bounds_low });
+            return (Range::new(at + 1, self.upper), Range::new(self.lower, at));
         } else {
-            bounds_low.push(at - 1);
-            bounds_up.insert(0, at);
-            (Range { bounds: bounds_low }, Range { bounds: bounds_up })
+            return (Range::new(self.lower, at - 1), Range::new(at, self.upper));
         }
     }
 
     pub fn total(&self) -> usize {
-        let mut sum = 0;
-        for i in (0..self.bounds.len()).step_by(2) {
-            let lower = self.bounds[i];
-            let upper = self.bounds[i + 1];
+        self.upper - self.lower + 1
+    }
+}
 
-            sum += upper - lower + 1;
-        }
+impl Display for Range {
+    fn fmt(&self, f: &mut Formatter) -> Result {
+        write!(f, "({}, {})", self.lower, self.upper)
+    }
+}
 
-        sum
+impl Display for PartRange {
+    fn fmt(&self, f: &mut Formatter) -> Result {
+        write!(f, "x: {}, m: {}, a: {}, s: {}", self.x, self.m, self.a, self.s)
     }
 }

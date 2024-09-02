@@ -19,7 +19,12 @@ pub fn task() {
     // println!("range1: {:?}, range2: {:?}", range1.bounds, range2.bounds);
 
     let mut total: usize = 0;
-    run_pipeline(parts_range, workflows.get("in").unwrap(), &workflows, &mut total);
+    run_pipeline(
+        parts_range,
+        workflows.get("in").unwrap(),
+        &workflows,
+        &mut total,
+    );
     println!("Calculated total: {}", total);
 }
 
@@ -32,20 +37,28 @@ pub fn run_pipeline(
     let mut processed_range = parts_range;
 
     for rule in workflow.rules.iter() {
-        println!("processing rule: {:?} for range: {:?}", rule, processed_range);
         match rule {
-            Rule::Accept() => *total += processed_range.total(),
-            Rule::Reject() => {},
+            Rule::Accept() => {
+                *total += processed_range.total();
+            }
+            Rule::Reject() => {}
             Rule::Send(name) => {
-                run_pipeline(processed_range.clone(), workflows.get(name).unwrap(), workflows, total);
+                run_pipeline(
+                    processed_range.clone(),
+                    workflows.get(name).unwrap(),
+                    workflows,
+                    total,
+                );
             }
             Rule::Condition(field_name, operation, compared_to, action) => {
                 let (range_ok, range_bad) = processed_range.split(field_name, *compared_to, operation);
                 processed_range = range_bad;
 
                 match &**action {
-                    Rule::Accept() => *total += range_ok.total(),
-                    Rule::Reject() => {},
+                    Rule::Accept() => {
+                        *total += range_ok.total();
+                    }
+                    Rule::Reject() => {}
                     Rule::Send(name) => {
                         run_pipeline(range_ok, workflows.get(name).unwrap(), workflows, total);
                     }
