@@ -1,24 +1,59 @@
 use std::collections::HashMap;
 
-use crate::{common::print_by_line::PrintByLine, parse_input};
+use crate::parse_input;
 
 mod part;
+mod range;
 mod workflow;
 use part::*;
+use range::*;
 use workflow::*;
 
 pub fn task() {
     let lines = parse_input!();
-    let (workflows, parts) = extract_input(&lines);
+    let (workflows, _) = extract_input(&lines);
+    let parts_range = PartRange::new();
 
-    // workflows.print_by_line();
-    // parts.print_by_line();
+    // let range = Range::new();
+    // let (range1, range2) = range.split(500, "<");
+    // println!("range1: {:?}, range2: {:?}", range1.bounds, range2.bounds);
 
-    let total = parts.iter().map(|part| {
-        process_part(part, workflows.get("in").unwrap(), &workflows)
-    }).sum::<usize>();
+    let mut total: usize = 0;
+    run_pipeline(parts_range, workflows.get("in").unwrap(), &workflows, &mut total);
+    println!("Calculated total: {}", total);
+}
 
-    println!("Total: {total}");
+pub fn run_pipeline(
+    parts_range: PartRange,
+    workflow: &Workflow,
+    workflows: &HashMap<String, Workflow>,
+    total: &mut usize,
+) {
+    let mut processed_range = parts_range;
+
+    for rule in workflow.rules.iter() {
+        println!("processing rule: {:?} for range: {:?}", rule, processed_range);
+        match rule {
+            Rule::Accept() => *total += processed_range.total(),
+            Rule::Reject() => {},
+            Rule::Send(name) => {
+                run_pipeline(processed_range.clone(), workflows.get(name).unwrap(), workflows, total);
+            }
+            Rule::Condition(field_name, operation, compared_to, action) => {
+                let (range_ok, range_bad) = processed_range.split(field_name, *compared_to, operation);
+                processed_range = range_bad;
+
+                match &**action {
+                    Rule::Accept() => *total += range_ok.total(),
+                    Rule::Reject() => {},
+                    Rule::Send(name) => {
+                        run_pipeline(range_ok, workflows.get(name).unwrap(), workflows, total);
+                    }
+                    _ => unreachable!("Can't process this action"),
+                }
+            }
+        }
+    }
 }
 
 pub fn extract_input(lines: &Vec<String>) -> (HashMap<String, Workflow>, Vec<Part>) {
@@ -46,6 +81,18 @@ pub fn extract_input(lines: &Vec<String>) -> (HashMap<String, Workflow>, Vec<Par
     (workflows, parts)
 }
 
+pub fn part1() {
+    let lines = parse_input!();
+    let (workflows, parts) = extract_input(&lines);
+
+    let total = parts
+        .iter()
+        .map(|part| process_part(part, workflows.get("in").unwrap(), &workflows))
+        .sum::<usize>();
+
+    println!("Total: {total}");
+}
+
 pub fn process_part(
     part: &Part,
     workflow: &Workflow,
@@ -69,10 +116,9 @@ pub fn process_part(
                         Rule::Accept() => return part.sum(),
                         Rule::Reject() => return 0,
                         Rule::Send(name) => {
-                            println!("{}, {:?}", name, action);
                             return process_part(part, workflows.get(name).unwrap(), workflows)
-                        },
-                        _ => panic!("Can't process this action")
+                        }
+                        _ => panic!("Can't process this action"),
                     }
                 }
             }
