@@ -1,4 +1,4 @@
-use crate::parse_input;
+use crate::{common::algos::lcm_vec, parse_input};
 
 mod circuit;
 mod extract;
@@ -9,15 +9,20 @@ use modules::*;
 
 pub fn task() {
     let lines = parse_input!();
-    let mut circuit: Circuit = extract_input(&lines);
+    let (mut circuit, mut final_circle) = extract_input(&lines);
+    println!("Final circle: {:?}", final_circle);
 
-    let mut high_signals = 0;
-    let mut low_signals = 0;
+    let mut cycles: Vec<u64> = Vec::new();
+    let mut iterations_count = 0;
 
-    for _ in 0..1000 {
-        push_button(&mut circuit, &mut high_signals, &mut low_signals);
+    loop {
+        iterations_count += 1;
+        push_button(&mut circuit, &mut cycles, &mut final_circle, iterations_count);
+
+        if final_circle.is_empty() {
+            break;
+        }
     }
 
-    println!("H: {}, L: {}", high_signals, low_signals);
-    println!("Multiplication: {}", high_signals * low_signals);
+    println!("LCM of layers: {}", lcm_vec(&cycles));
 }
