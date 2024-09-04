@@ -108,6 +108,6 @@ pub fn task2() {
    }
 
    println!("steps_count = {:?}", steps_count);
-   let lcm = lcm_vec(steps_count);
+   let lcm = lcm_vec(&steps_count);
    println!("lcm = {:?}", lcm);
 }

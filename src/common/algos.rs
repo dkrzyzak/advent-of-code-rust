@@ -10,6 +10,6 @@ pub fn lcm(a: u64, b: u64) -> u64 {
     a * b / gcd(a, b)
 }
 
-pub fn lcm_vec(numbers: Vec<u64>) -> u64 {
-    numbers.into_iter().fold(1, |a, b| lcm(a, b))
+pub fn lcm_vec(numbers: &Vec<u64>) -> u64 {
+    numbers.into_iter().fold(1, |a, b| lcm(a, *b))
 }
