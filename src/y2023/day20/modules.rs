@@ -9,7 +9,7 @@ pub struct Module {
     pub outputs: Vec<String>,
 }
 
-#[derive(Debug, Clone, Copy)]
+#[derive(Debug, Clone, Copy, PartialEq)]
 pub enum ModuleType {
     Broadcast,
     FlipFlop,
@@ -27,12 +27,15 @@ impl Module {
         }
     }
 
-    pub fn new_state(&mut self, signal: bool) -> bool {
+    pub fn new_state(&mut self, signal: bool) -> Option<bool> {
+        if self.module_type == ModuleType::FlipFlop && signal {
+            // if flip flop receives high pulse, it is ignored
+            return None;
+        }
+
         let new_state = match self.module_type {
-            ModuleType::Broadcast => false,
-            ModuleType::FlipFlop => {
-                if signal { self.state } else { !self.state }
-            }
+            ModuleType::Broadcast => signal,
+            ModuleType::FlipFlop => if signal { self.state } else { !self.state },
             ModuleType::Conjunction => {
                 let all_highs = self.inputs.values().all(|value| *value);
 
@@ -42,6 +45,6 @@ impl Module {
 
         self.state = new_state;
 
-        new_state
+        Some(new_state)
     }
 }

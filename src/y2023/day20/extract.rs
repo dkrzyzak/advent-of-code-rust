@@ -1,9 +1,7 @@
 use std::collections::HashMap;
-
 use lazy_static::lazy_static;
 use regex::Regex;
-
-use super::{Module, ModuleType};
+use super::{Circuit, Module, ModuleType};
 
 lazy_static! {
     static ref BROADCAST_REG: Regex = Regex::new(r"broadcaster -> (.*)").unwrap();
@@ -11,7 +9,7 @@ lazy_static! {
     static ref CON_REG: Regex = Regex::new(r"&(\w+) -> (.*)").unwrap();
 }
 
-pub fn extract_input(lines: &Vec<String>) -> HashMap<String, Module>  {
+pub fn extract_input(lines: &Vec<String>) -> Circuit  {
     let mut circuit = HashMap::<String, Module>::new();
 
     for line in lines.iter() {
@@ -39,6 +37,11 @@ pub fn extract_input(lines: &Vec<String>) -> HashMap<String, Module>  {
         for output in module.outputs.iter() {
             if let Some(output_module) = circuit.get_mut(output) {
                 output_module.inputs.insert(name.clone(), false);
+            } else {
+                circuit.insert(
+                    output.clone(),
+                    Module::new(ModuleType::FlipFlop, output.clone(), Vec::new()),
+                );
             }
         }
     }
