@@ -1,4 +1,7 @@
-use std::collections::HashSet;
+use std::{
+    cmp,
+    collections::{HashSet, VecDeque},
+};
 
 use crate::{common::point::Point, parse_input};
 
@@ -9,69 +12,51 @@ pub fn task() {
         .map(|line| line.chars().collect::<Vec<_>>())
         .collect::<Vec<_>>();
 
-    let start = Point::new(0, 1);
-    let end = Point::new((lines.len() - 1) as isize, (lines[0].len() - 2) as isize);
-
-    let mut longest_path = 0;
-    // let mut starting_path = HashSet::new();
-    // starting_path.insert(start);
-
-    println!("Start: {:?}, end: {:?}", start, end);
-
-    next_move(start, &grid, &end, HashSet::new(), &mut longest_path);
-
-    println!("Longest path: {}", longest_path - 1); // -1 because start point doesn't count
+    traverse_bfs(&grid);
 }
 
-pub fn next_move(
-    point: Point,
-    grid: &Vec<Vec<char>>,
-    end: &Point,
-    mut path: HashSet<Point>,
-    longest: &mut usize,
-) {
-    if !point.is_valid(grid.len() as isize, grid[0].len() as isize) {
-        return; // we stepped out of the grid
-    }
+pub fn traverse_bfs(grid: &Vec<Vec<char>>) {
+    let start = Point::new(0, 1);
+    let end = Point::new((grid.len() - 1) as isize, (grid[0].len() - 2) as isize);
+    let mut longest_path = 0;
 
-    let tile = grid[point.0 as usize][point.1 as usize];
-    
-    if tile == '#' {
-        return; // we ended up in the forrest
-    }
+    let mut queue = VecDeque::<(Point, HashSet<Point>)>::new();
+    queue.push_back((start, HashSet::new()));
 
-    if !path.insert(point) {
-        return; // we've been there before
-    }
-
-    if point == *end {
-        if path.len() > *longest {
-            *longest = path.len();
+    while let Some((point, mut path)) = queue.pop_front() {
+        if !point.is_valid(grid.len() as isize, grid[0].len() as isize) {
+            continue; // we stepped out of the grid
         }
 
-        return;
-    }
-    
-    match tile {
-        '.' => {
-            next_move(point.east(), grid, end, path.clone(), longest);
-            next_move(point.west(), grid, end, path.clone(), longest);
-            next_move(point.north(), grid, end, path.clone(), longest);
-            next_move(point.south(), grid, end, path.clone(), longest);
-        },
-        '>' => {
-            next_move(point.east(), grid, end, path, longest);
-        },
-        '<' => {
-            next_move(point.west(), grid, end, path, longest);
-        },
-        '^' => {
-            next_move(point.north(), grid, end, path, longest);
-        },
-        'v' => {
-            next_move(point.south(), grid, end, path, longest);
-        },
-        _ => unreachable!(),
+        let tile = grid[point.0 as usize][point.1 as usize];
+
+        if tile == '#' {
+            continue; // we ended up in the forrest
+        }
+
+        if !path.insert(point) {
+            continue; // we've been there before
+        }
+
+        if point == end {
+            longest_path = cmp::max(longest_path, path.len());
+            continue;
+        }
+
+        match tile {
+            '.' => {
+                queue.push_back((point.east(), path.clone()));
+                queue.push_back((point.west(), path.clone()));
+                queue.push_back((point.north(), path.clone()));
+                queue.push_back((point.south(), path.clone()));
+            }
+            '>' => queue.push_back((point.east(), path.clone())),
+            '<' => queue.push_back((point.west(), path.clone())),
+            '^' => queue.push_back((point.north(), path.clone())),
+            'v' => queue.push_back((point.south(), path.clone())),
+            _ => unreachable!(),
+        }
     }
 
+    println!("Longest path: {}", longest_path - 1); // -1 because start point doesn't count
 }
