@@ -59,6 +59,7 @@ mod common {
     pub mod write;
     pub mod read;
     pub mod point;
+    pub mod grid;
     pub mod direction;
     pub mod print_by_line;
     pub mod algos;

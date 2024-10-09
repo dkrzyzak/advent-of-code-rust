@@ -1,5 +1,5 @@
 use std::{borrow::Borrow, ops::Add};
-use super::direction::Direction;
+use super::{direction::Direction, grid::Grid};
 
 #[derive(Debug, Clone, Copy, PartialEq, Eq, Hash, PartialOrd, Ord)]
 pub struct Point(pub isize, pub isize);
@@ -12,6 +12,10 @@ impl Point {
 
     pub fn is_valid(&self, rows: isize, cols: isize) -> bool {
         self.0 >= 0 && self.0 < rows && self.1 >= 0 && self.1 < cols
+    }
+
+    pub fn is_valid_grid(&self, grid: &Grid) -> bool {
+        self.0 >= 0 && self.0 < grid.irows && self.1 >= 0 && self.1 < grid.icols
     }
 
     pub fn north(&self) -> Point {
