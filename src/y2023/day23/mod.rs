@@ -1,62 +1,78 @@
 use std::{
     cmp,
     collections::{HashSet, VecDeque},
+    time::Instant,
 };
 
-use crate::{common::point::Point, parse_input};
+use crate::{
+    common::{grid::Grid, point::Point},
+    parse_input,
+};
 
 pub fn task() {
     let lines = parse_input!();
-    let grid = lines
-        .iter()
-        .map(|line| line.chars().collect::<Vec<_>>())
-        .collect::<Vec<_>>();
+    let grid = Grid::from_vec(&lines);
 
-    traverse_bfs(&grid);
+    traverse_dfs(&grid);
 }
 
-pub fn traverse_bfs(grid: &Vec<Vec<char>>) {
+pub fn traverse_dfs(grid: &Grid) {
     let start = Point::new(0, 1);
-    let end = Point::new((grid.len() - 1) as isize, (grid[0].len() - 2) as isize);
+    let end = Point::new(grid.irows - 1, grid.icols - 2);
     let mut longest_path = 0;
 
+    // (point, path)
     let mut queue = VecDeque::<(Point, HashSet<Point>)>::new();
     queue.push_back((start, HashSet::new()));
 
-    while let Some((point, mut path)) = queue.pop_front() {
-        if !point.is_valid(grid.len() as isize, grid[0].len() as isize) {
-            continue; // we stepped out of the grid
-        }
+    let now = Instant::now();
 
-        let tile = grid[point.0 as usize][point.1 as usize];
+    while let Some((point, mut path)) = queue.pop_back() {
+        path.insert(point);
+        let tile = grid.iget(point.0, point.1);
 
-        if tile == '#' {
-            continue; // we ended up in the forrest
-        }
-
-        if !path.insert(point) {
-            continue; // we've been there before
-        }
+        let path_len = path.len();
 
         if point == end {
-            longest_path = cmp::max(longest_path, path.len());
+            longest_path = cmp::max(longest_path, path_len);
             continue;
         }
 
         match tile {
-            '.' => {
-                queue.push_back((point.east(), path.clone()));
-                queue.push_back((point.west(), path.clone()));
-                queue.push_back((point.north(), path.clone()));
-                queue.push_back((point.south(), path.clone()));
+            '.' | '>' | '<' | '^' | 'v' => {
+                vec![point.east(), point.west(), point.north(), point.south()]
+                    .iter()
+                    .for_each(|&point| {
+                        if should_explore(&point, grid, &path) {
+                            queue.push_back((point, path.clone()))
+                        }
+                    });
             }
-            '>' => queue.push_back((point.east(), path.clone())),
-            '<' => queue.push_back((point.west(), path.clone())),
-            '^' => queue.push_back((point.north(), path.clone())),
-            'v' => queue.push_back((point.south(), path.clone())),
             _ => unreachable!(),
         }
     }
 
+    println!("Done in: {:?}", now.elapsed());
+
     println!("Longest path: {}", longest_path - 1); // -1 because start point doesn't count
 }
+
+pub fn should_explore(point: &Point, grid: &Grid, path: &HashSet<Point>) -> bool {
+    if !point.is_valid_grid(grid) {
+        return false; // we stepped out of the grid
+    }
+
+    let tile = grid.iget(point.0, point.1);
+
+    if tile == '#' {
+        return false; // we ended up in the forrest
+    }
+
+    if path.contains(point) {
+        return false; // we've been there before
+    }
+
+    true
+}
+
+// 4710 is too low
