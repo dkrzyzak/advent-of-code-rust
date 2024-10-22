@@ -39,6 +39,22 @@ impl Shape {
             (Shape::Paper, Shape::Scissors) => Outcome::Lose,
         }
     }
+
+    pub fn needed_shape(&self, outcome: &Outcome) -> Self {
+        match (self, outcome) {
+            (Shape::Rock, Outcome::Win) => Shape::Paper,
+            (Shape::Rock, Outcome::Draw) => Shape::Rock,
+            (Shape::Rock, Outcome::Lose) => Shape::Scissors,
+
+            (Shape::Paper, Outcome::Win) => Shape::Scissors,
+            (Shape::Paper, Outcome::Draw) => Shape::Paper,
+            (Shape::Paper, Outcome::Lose) => Shape::Rock,
+
+            (Shape::Scissors, Outcome::Win) => Shape::Rock,
+            (Shape::Scissors, Outcome::Draw) => Shape::Scissors,
+            (Shape::Scissors, Outcome::Lose) => Shape::Paper,
+        }
+    }
 }
 
 #[derive(Debug)]
@@ -80,4 +96,24 @@ pub fn extract_shapes(lines: &Vec<String>) -> Vec<(Shape, Shape)> {
     }).collect::<Vec<_>>()
 }
 
+pub fn extract_shapes_part_2(lines: &Vec<String>) -> Vec<(Shape, Outcome)> {
+    lines.iter().map(|line| {
+        let (elf_letter, my_letter) = parse_captures!(REG, line, 1 char, 2 char);
 
+        let elf_shape = match elf_letter {
+            'A' => Shape::Rock,
+            'B' => Shape::Paper,
+            'C' => Shape::Scissors,
+            _ => unreachable!(),
+        };
+
+        let my_shape = match my_letter {
+            'X' => Outcome::Lose,
+            'Y' => Outcome::Draw,
+            'Z' => Outcome::Win,
+            _ => unreachable!(),
+        };
+
+        (elf_shape, my_shape)
+    }).collect::<Vec<_>>()
+}
