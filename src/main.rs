@@ -1,6 +1,9 @@
 #![allow(dead_code)]
 #![allow(unused_variables)]
 
+use common::new_day;
+use std::env;
+
 mod y2015 {
     pub mod day1;
     pub mod day2;
@@ -34,7 +37,7 @@ mod y2022 {
     pub mod day2;
     pub mod day3;
     pub mod day4;
- }
+}
 
 mod y2023 {
     pub mod day1;
@@ -63,6 +66,7 @@ mod y2023 {
 }
 
 mod common {
+    pub mod new_day;
     pub mod write;
     pub mod read;
     pub mod point;
@@ -74,5 +78,10 @@ mod common {
 }
 
 fn main() {
+    let args: Vec<String> = env::args().collect();
+    if let Some(_) = new_day::resolve_args(&args) {
+        return;
+    }
+
     y2022::day4::task();
 }
