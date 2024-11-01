@@ -37,6 +37,7 @@ mod y2022 {
     pub mod day2;
     pub mod day3;
     pub mod day4;
+    pub mod day5;
 }
 
 mod y2023 {
@@ -83,5 +84,5 @@ fn main() {
         return;
     }
 
-    y2022::day4::task();
+    y2022::day5::task();
 }
