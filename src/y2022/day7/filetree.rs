@@ -7,13 +7,6 @@ pub enum Entity {
 }
 
 impl Entity {
-    pub fn size(&self) -> usize {
-        match &self {
-            Self::File(_, size) => *size,
-            Self::Dir(_, entities) => entities.values().map(|e| e.size()).sum::<usize>(),
-        }
-    }
-
     pub fn new_dir(name: String) -> Entity {
         Entity::Dir(name, HashMap::new())
     }
