@@ -29,7 +29,7 @@ pub fn traverse_dfs(grid: &Grid) {
 
     while let Some((point, mut path)) = queue.pop_back() {
         path.insert(point);
-        let tile = grid.iget(point.0, point.1);
+        let tile = grid.iget(point.0, point.1).unwrap();
 
         let path_len = path.len();
 
@@ -62,7 +62,7 @@ pub fn should_explore(point: &Point, grid: &Grid, path: &HashSet<Point>) -> bool
         return false; // we stepped out of the grid
     }
 
-    let tile = grid.iget(point.0, point.1);
+    let tile = grid.iget(point.0, point.1).unwrap();
 
     if tile == '#' {
         return false; // we ended up in the forrest

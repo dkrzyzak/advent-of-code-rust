@@ -32,7 +32,11 @@ impl Grid {
         self.data[row][col]
     }
 
-    pub fn iget(&self, row: isize, col: isize) -> char {
-        self.data[row as usize][col as usize]
+    pub fn iget(&self, row: isize, col: isize) -> Option<char> {
+        if row < 0 || row >= self.irows || col < 0 || col >= self.icols {
+            return None;
+        }
+
+        Some(self.data[row as usize][col as usize])
     }
 }
