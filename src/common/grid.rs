@@ -1,8 +1,8 @@
 use super::point::Point;
 
 #[derive(Debug, Clone)]
-pub struct Grid {
-    pub data: Vec<Vec<char>>,
+pub struct Grid<T = char> {
+    pub data: Vec<Vec<T>>,
     pub rows: usize,
     pub cols: usize,
     pub irows: isize,
@@ -30,7 +30,15 @@ impl Grid {
         }
     }
 
-    pub fn contains(&self, point: &Point) -> bool {
+    pub fn contains(&self, row: usize, col: usize) -> bool {
+        return row < self.rows && col < self.cols;
+    }
+
+    pub fn icontains(&self, row: isize, col: isize) -> bool {
+        return row >= 0 && (row as usize) < self.rows && col >= 0 && (col as usize) < self.cols;
+    }
+
+    pub fn contains_point(&self, point: &Point) -> bool {
         return point.0 >= 0
             && (point.0 as usize) < self.rows
             && point.1 >= 0
@@ -41,9 +49,8 @@ impl Grid {
         self.data[row][col]
     }
 
-    // TODO: use self.contains
     pub fn iget(&self, row: isize, col: isize) -> Option<char> {
-        if row < 0 || row >= self.irows || col < 0 || col >= self.icols {
+        if !self.icontains(row, col) {
             return None;
         }
 
@@ -51,7 +58,7 @@ impl Grid {
     }
 
     pub fn get_point(&self, point: &Point) -> Option<char> {
-        if !self.contains(point) {
+        if !self.contains_point(point) {
             return None;
         }
 

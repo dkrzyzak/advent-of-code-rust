@@ -3,6 +3,7 @@
       "akitas",
       "hasher",
       "icols",
+      "icontains",
       "iget",
       "irows",
       "Itertools",
