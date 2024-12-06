@@ -9,20 +9,16 @@ pub struct Grid<T = char> {
     pub icols: isize,
 }
 
-// impl<T> Grid<T> where T: Clone
-
-impl Grid {
-    pub fn from_vec(v: &Vec<String>) -> Grid {
-        let grid = v
-            .iter()
-            .map(|line| line.chars().collect::<Vec<_>>())
-            .collect::<Vec<_>>();
-
-        let rows = grid.len();
-        let cols = grid[0].len();
+impl<T> Grid<T>
+where
+    T: Copy + PartialEq,
+{
+    pub fn initialize(data: Vec<Vec<T>>) -> Grid<T> {
+        let rows = data.len();
+        let cols = data[0].len();
 
         Grid {
-            data: grid,
+            data,
             rows,
             cols,
             irows: rows as isize,
@@ -45,11 +41,11 @@ impl Grid {
             && (point.1 as usize) < self.cols;
     }
 
-    pub fn get(&self, row: usize, col: usize) -> char {
+    pub fn get(&self, row: usize, col: usize) -> T {
         self.data[row][col]
     }
 
-    pub fn iget(&self, row: isize, col: isize) -> Option<char> {
+    pub fn iget(&self, row: isize, col: isize) -> Option<T> {
         if !self.icontains(row, col) {
             return None;
         }
@@ -57,7 +53,7 @@ impl Grid {
         Some(self.data[row as usize][col as usize])
     }
 
-    pub fn get_point(&self, point: &Point) -> Option<char> {
+    pub fn get_point(&self, point: &Point) -> Option<T> {
         if !self.contains_point(point) {
             return None;
         }
@@ -65,7 +61,7 @@ impl Grid {
         return Some(self.data[point.0 as usize][point.1 as usize]);
     }
 
-    pub fn find(&self, search: char) -> Option<Point> {
+    pub fn find(&self, search: T) -> Option<Point> {
         for row in 0..self.rows {
             for col in 0..self.cols {
                 if self.data[row][col] == search {
@@ -77,7 +73,35 @@ impl Grid {
         return None;
     }
 
-    pub fn overwrite(&mut self, row: usize, col: usize, value: char) {
+    pub fn overwrite(&mut self, row: usize, col: usize, value: T) {
         self.data[row][col] = value;
+    }
+}
+
+// implement initializing:
+
+impl Grid<char> {
+    pub fn from_vec(input: &Vec<String>) -> Grid<char> {
+        let data = input
+            .iter()
+            .map(|line| line.chars().collect::<Vec<_>>())
+            .collect::<Vec<_>>();
+
+        Grid::initialize(data)
+    }
+}
+
+impl Grid<usize> {
+    pub fn usize_from_vec(input: &Vec<String>) -> Grid<usize> {
+        let data = input
+            .iter()
+            .map(|line| {
+                line.chars()
+                    .map(|ch| ch.to_digit(10).unwrap() as usize)
+                    .collect::<Vec<_>>()
+            })
+            .collect::<Vec<_>>();
+
+        Grid::initialize(data)
     }
 }
