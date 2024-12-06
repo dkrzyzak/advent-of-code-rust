@@ -74,6 +74,7 @@ mod y2024 {
     pub mod day3;
     pub mod day4;
     pub mod day5;
+    pub mod day6;
 }
 
 mod common {
@@ -94,5 +95,5 @@ fn main() {
         return;
     }
 
-    y2024::day5::task();
+    y2024::day6::task();
 }
