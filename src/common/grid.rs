@@ -69,4 +69,8 @@ impl Grid {
 
         return None;
     }
+
+    pub fn overwrite(&mut self, row: usize, col: usize, value: char) {
+        self.data[row][col] = value;
+    }
 }
