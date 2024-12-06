@@ -105,3 +105,17 @@ impl Grid<usize> {
         Grid::initialize(data)
     }
 }
+
+impl Grid<bool> {
+    pub fn map_bool_from_vec<Mapper>(input: &Vec<String>, mapper: Mapper) -> Grid<bool>
+    where
+        Mapper: Fn(char) -> bool,
+    {
+        let data = input
+            .iter()
+            .map(|line| line.chars().map(|ch| mapper(ch)).collect::<Vec<_>>())
+            .collect::<Vec<_>>();
+
+        Grid::initialize(data)
+    }
+}

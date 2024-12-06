@@ -1,8 +1,7 @@
-use crate::common::point::Point;
-use super::Grid;
+use crate::common::{grid::Grid, point::Point};
 
-pub fn extract_grid(lines: &Vec<String>) -> (Grid, Point) {
-    let mut grid = Vec::new();
+pub fn extract_grid(lines: &Vec<String>) -> (Grid<bool>, Point) {
+    let mut matrix = Vec::new();
     let mut starting_point = Point::new(0, 0);
 
     for row in 0..lines.len() {
@@ -23,8 +22,10 @@ pub fn extract_grid(lines: &Vec<String>) -> (Grid, Point) {
             }
         }
 
-        grid.push(row_vec);
+        matrix.push(row_vec);
     }
+
+    let grid = Grid::initialize(matrix);
 
     (grid, starting_point)
 }

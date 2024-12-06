@@ -1,11 +1,9 @@
 use std::collections::{HashMap, VecDeque};
 
-use crate::{common::point::Point, parse_input};
+use crate::{common::{grid::Grid, point::Point}, parse_input};
 
 mod extract;
 use extract::*;
-
-pub type Grid = Vec<Vec<bool>>;
 
 pub fn task() {
     let lines = parse_input!();
@@ -31,7 +29,7 @@ pub fn task() {
 
 pub fn bfs_tiles(
     start: Point,
-    grid: &Grid,
+    grid: &Grid<bool>,
     distances: &mut HashMap<Point, usize>,
     how_many: usize,
 ) {
@@ -41,11 +39,11 @@ pub fn bfs_tiles(
     while !queue.is_empty() {
         let (point, steps) = queue.pop_front().unwrap();
 
-        if !point.is_valid(grid.len() as isize, grid[0].len() as isize) {
+        if !grid.contains_point(&point) {
             continue;
         }
 
-        if !grid[point.0 as usize][point.1 as usize] {
+        if grid.get_point(&point).unwrap() == false {
             continue;
         }
 
