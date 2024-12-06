@@ -15,4 +15,13 @@ impl Direction {
             Direction::East => 3,
         }
     }
+
+    pub fn turn_right(&self) -> Direction {
+        match *self {
+            Direction::North => Direction::East,
+            Direction::South => Direction::West,
+            Direction::West => Direction::North,
+            Direction::East => Direction::South,
+        }
+    }
 }

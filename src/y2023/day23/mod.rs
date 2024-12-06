@@ -58,7 +58,7 @@ pub fn traverse_dfs(grid: &Grid) {
 }
 
 pub fn should_explore(point: &Point, grid: &Grid, path: &HashSet<Point>) -> bool {
-    if !point.is_valid_grid(grid) {
+    if !grid.contains(point) {
         return false; // we stepped out of the grid
     }
 
