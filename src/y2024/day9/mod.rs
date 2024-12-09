@@ -1,3 +1,5 @@
+use std::time::Instant;
+
 use crate::parse_input;
 
 mod disk;
@@ -31,8 +33,9 @@ fn part1(disk_map: &Vec<u8>) {
 fn part2(disk_map: &Vec<u8>) {
     let mut disk = restore_disk_blocks(disk_map);
 
+    let now = Instant::now();
     fragment_disk_files(&mut disk);
-
+    println!("Fragmented in {:?}", now.elapsed());
     let checksum = calculate_checksum(&disk);
 
     println!("Checksum: {}", checksum);
