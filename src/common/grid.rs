@@ -65,12 +65,26 @@ where
         for row in 0..self.rows {
             for col in 0..self.cols {
                 if self.data[row][col] == search {
-                    return Some(Point::new(row as isize, col as isize));
+                    return Some(Point(row as isize, col as isize));
                 }
             }
         }
 
         return None;
+    }
+
+    pub fn find_all(&self, search: T) -> Vec<Point> {
+        let mut found = Vec::new();
+
+        for row in 0..self.rows {
+            for col in 0..self.cols {
+                if self.data[row][col] == search {
+                    found.push(Point(row as isize, col as isize));
+                }
+            }
+        }
+
+        found
     }
 
     pub fn overwrite(&mut self, row: usize, col: usize, value: T) {
@@ -98,6 +112,22 @@ impl Grid<usize> {
             .map(|line| {
                 line.chars()
                     .map(|ch| ch.to_digit(10).unwrap() as usize)
+                    .collect::<Vec<_>>()
+            })
+            .collect::<Vec<_>>();
+
+        Grid::initialize(data)
+    }
+}
+
+// todo: make generic Numeric trait and 
+impl Grid<u8> {
+    pub fn u8_from_vec(input: &Vec<String>) -> Grid<u8> {
+        let data = input
+            .iter()
+            .map(|line| {
+                line.chars()
+                    .map(|ch| ch.to_digit(10).unwrap() as u8)
                     .collect::<Vec<_>>()
             })
             .collect::<Vec<_>>();
