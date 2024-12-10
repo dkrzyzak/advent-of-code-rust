@@ -1,6 +1,7 @@
 use super::direction::Direction;
 use std::{
     borrow::Borrow,
+    fmt,
     ops::{Add, Sub},
 };
 
@@ -35,6 +36,18 @@ impl Point {
             Direction::North => self.north(),
             Direction::South => self.south(),
         }
+    }
+}
+
+// impl fmt::Debug for Point {
+//     fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
+//         write!(f, "({}, {})", self.0, self.1)
+//     }
+// }
+
+impl fmt::Display for Point {
+    fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
+        write!(f, "({}, {})", self.0, self.1)
     }
 }
 

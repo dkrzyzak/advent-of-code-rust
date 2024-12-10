@@ -127,7 +127,7 @@ impl Grid<u8> {
             .iter()
             .map(|line| {
                 line.chars()
-                    .map(|ch| ch.to_digit(10).unwrap() as u8)
+                    .map(|ch| ch.to_digit(10).unwrap_or(11) as u8)
                     .collect::<Vec<_>>()
             })
             .collect::<Vec<_>>();
