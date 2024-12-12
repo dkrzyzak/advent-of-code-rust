@@ -6,6 +6,13 @@ pub enum Direction {
     West,
 }
 
+pub const DIRECTIONS: [Direction; 4] = [
+    Direction::North,
+    Direction::South,
+    Direction::East,
+    Direction::West,
+];
+
 impl Direction {
     pub fn index(&self) -> usize {
         match *self {

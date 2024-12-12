@@ -90,6 +90,10 @@ where
     pub fn overwrite(&mut self, row: usize, col: usize, value: T) {
         self.data[row][col] = value;
     }
+
+    pub fn overwrite_point(&mut self, point: &Point, value: T) {
+        self.data[point.0 as usize][point.1 as usize] = value;
+    }
 }
 
 // implement initializing:
