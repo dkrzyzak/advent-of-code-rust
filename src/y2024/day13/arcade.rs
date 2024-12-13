@@ -25,7 +25,7 @@ pub enum Button {
     B,
 }
 
-pub fn extract_machines(lines: &Vec<String>, offset: u64) -> Vec<Machine> {
+pub fn extract_machines(lines: &Vec<String>) -> Vec<Machine> {
     let mut iter = lines.iter();
     let mut machines = Vec::new();
 
@@ -41,8 +41,8 @@ pub fn extract_machines(lines: &Vec<String>, offset: u64) -> Vec<Machine> {
             ay,
             bx,
             by,
-            prize_x: prize_x + offset,
-            prize_y: prize_y + offset,
+            prize_x,
+            prize_y,
         });
 
         // skip the empty line

@@ -6,16 +6,15 @@ mod arcade;
 use arcade::*;
 
 pub fn task() {
-    let offset: u64 = 0; // 0 for part 1
     let lines = parse_input!();
-    let machines = extract_machines(&lines, offset);
+    let machines = extract_machines(&lines);
 
     let mut min_tokens_spent = 0;
 
     let now = Instant::now();
 
     for machine in machines.iter() {
-        if let Some(min_cost) = solve(machine) {
+        if let Some(min_cost) = solve_part_2(machine) {
             min_tokens_spent += min_cost;
         }
     }
@@ -26,7 +25,7 @@ pub fn task() {
     // 33842 is too low
 }
 
-pub fn solve(machine: &Machine) -> Option<u64> {
+pub fn solve_part_1(machine: &Machine) -> Option<u64> {
     let max_clicks = 100;
     let mut cheapest: Option<u64> = None;
 
@@ -56,4 +55,29 @@ pub fn solve(machine: &Machine) -> Option<u64> {
     }
 
     cheapest
+}
+
+pub fn solve_part_2(machine: &Machine) -> Option<u64> {
+    const OFFSET: u64 = 10_000_000_000_000;
+
+    // calculated on paper xd
+    let numerator = ((machine.by * (machine.prize_x + OFFSET)) as i64 - (machine.bx * (machine.prize_y + OFFSET)) as i64) as f64;
+    let denominator = ((machine.ax * machine.by) as i64 - (machine.ay * machine.bx) as i64) as f64;
+
+    let a = numerator / denominator;
+
+    if a != a.floor() || a < 0.0 {
+        return None;
+    }
+
+    // also calculated on paper
+    let b = ((machine.prize_x as i64 + OFFSET as i64 - a as i64 * machine.ax as i64) as f64) / machine.bx as f64;
+
+    if b != b.floor() || b < 0.0 {
+        return None;
+    }
+
+    let cost = 3 * a as u64 + b as u64;
+
+    return Some(cost);
 }
